@@ -10,18 +10,19 @@ def create_user(
     first_name: str = None,
     last_name: str = None,
 ) -> get_user_model():
-    user = get_user_model().objects.create_user(
-        username=username,
-        password=password
-    )
+    extra_fields = {}
     if email is not None:
-        user.email = email
+        extra_fields["email"] = email
     if first_name is not None:
-        user.first_name = first_name
+        extra_fields["first_name"] = first_name
     if last_name is not None:
-        user.last_name = last_name
-    user.save()
-    return user
+        extra_fields["last_name"] = last_name
+
+    return get_user_model().objects.create_user(
+        username=username,
+        password=password,
+        **extra_fields
+    )
 
 
 def get_user(
